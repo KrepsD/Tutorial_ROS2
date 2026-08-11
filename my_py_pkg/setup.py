@@ -25,7 +25,8 @@ setup(
     entry_points={
         'console_scripts': [
             "blinker_publisher = my_py_pkg.blinker_publisher:main",
-            "blinker_subscriber = my_py_pkg.blinker_subscriber:main"
+            "blinker_subscriber = my_py_pkg.blinker_subscriber:main",
+            "blinker_bridge = my_py_pkg.blinker_bridge:main",
         ],
     },
 )
