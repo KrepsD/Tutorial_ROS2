@@ -1,0 +1,125 @@
+schema_version: 1
+
+# Guia resumido dos parâmetros:
+# serial -> configura a comunicação entre o computador e o Arduino.
+#   port -> porta serial em que o Arduino está conectado.
+#   baud_rate -> velocidade da comunicação; deve ser igual à do Arduino.
+#   percept_poll_period -> intervalo, em segundos, para pedir percepções (solicita a informação ao Arduino).
+#   serial_read_period -> intervalo, em segundos, para verificar a serial (recebe a resposta e encaminha ao adaptador).
+#   percept_request -> mensagem Javino usada para solicitar as percepções.
+# interfaces -> lista dos sensores e atuadores disponibilizados no ROS 2.
+#   name -> nome interno da interface na bridge.
+#   kind -> adaptador usado: boolean_actuator, scalar_sensor ou
+#           discrete_actuator.
+#   command -> configuração do tópico que recebe comandos ROS 2.
+#   status -> configuração do tópico que publica estados ou leituras.
+#   topic -> nome do tópico ROS 2.
+#   ros_type -> tipo da mensagem ROS 2 usada pelo tópico.
+#   actions -> converte valores recebidos do ROS 2 em ações Javino.
+#   percept -> informa o nome e o argumento da percepção Javino.
+#   argument -> posição do valor dentro dos parênteses, começando em zero.
+#   values -> converte valores Javino em valores publicados no ROS 2.
+#   conversion -> aplica escala, deslocamento e limites a valores numéricos.
+#     scale -> valor pelo qual a leitura é multiplicada.
+#     offset -> valor somado à leitura depois da escala.
+#     minimum/maximum -> limites permitidos para a leitura final.
+
+serial:
+  port: /dev/ttyUSB0
+  baud_rate: 9600
+  percept_poll_period: 1.0
+  serial_read_period: 0.05
+  percept_request: getPercepts
+
+interfaces:
+  - name: led
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/led/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": ledOn
+        "false": ledOff
+
+    status:
+      topic: /arduino/led/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: ledStatus
+        argument: 0
+
+      values:
+        "on": true
+        "off": false
+
+  - name: led2
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/led2/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": ledOn2
+        "false": ledOff2
+
+    status:
+      topic: /arduino/led2/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: ledStatus2
+        argument: 0
+
+      values:
+        "on": true
+        "off": false
+
+  - name: distance_sensor
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/distance
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: distance
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 400.0
+
+  - name: motor
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/motor/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        forward: motorForward
+        backward: motorBackward
+        left: motorLeft
+        right: motorRight
+        stop: motorStop
+
+    status:
+      topic: /arduino/motor/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: motorStatus
+        argument: 0
+
+      values:
+        stopped: stopped
+        movingForward: forward
+        movingBackward: backward
+        turningLeft: left
+        turningRight: right
