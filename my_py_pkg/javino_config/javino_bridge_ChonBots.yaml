@@ -1,0 +1,277 @@
+schema_version: 1
+
+# ============================================================
+# SERIAL COMMUNICATION
+# ============================================================
+serial:
+  port: /dev/ttyUSB0
+  baud_rate: 9600
+  percept_poll_period: 1.0
+  serial_read_period: 0.05
+  percept_request: getPercepts
+
+interfaces:
+
+  # ============================================================
+  # MOTOR - Movement direction
+  # ============================================================
+  - name: motor
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/motor/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        forward: goAhead
+        backward: goBack
+        left: goLeft
+        right: goRight
+        stop: stop
+
+    status:
+      topic: /arduino/motor/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: motor
+        argument: 0
+
+      values:
+        stopped: stopped
+        running: running
+        turningRight: turningRight
+        turningLeft: turningLeft
+        backward: backward
+
+
+  # ============================================================
+  # MOTOR SPEED - Speed level
+  # ============================================================
+  - name: motor_speed
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/motor/speed/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        high: speedH
+        default: speedM
+        low: speedL
+
+    status:
+      topic: /arduino/motor/speed/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: speed
+        argument: 0
+
+      values:
+        default: default
+        high: high
+        low: low
+
+
+  # ============================================================
+  # BUZZER - Audible signaling
+  # ============================================================
+  - name: buzzer
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/buzzer/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        "on": buzzerOn
+        high: buzzerOnH
+        low: buzzerOnL
+        "off": buzzerOff
+
+    status:
+      topic: /arduino/buzzer/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: buzzer
+        argument: 0
+
+      values:
+        "off": "off"
+        "on": "on"
+        high: high
+        low: low
+
+
+  # ============================================================
+  # HEADLIGHT - Front illumination
+  # ============================================================
+  - name: headlight
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/headlight/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        "on": lightOn
+        high: lightOnH
+        low: lightOnL
+        "off": lightOff
+
+    status:
+      topic: /arduino/headlight/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: light
+        argument: 0
+
+      values:
+        "off": "off"
+        "on": "on"
+        high: high
+        low: low
+
+
+  # ============================================================
+  # TURN SIGNAL - Direction and hazard lights
+  # ============================================================
+  - name: turn_signal
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/turn_signal/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        alert: alertOn
+        right: flashROn
+        left: flashLOn
+        "off": flashLightOff
+
+    status:
+      topic: /arduino/turn_signal/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: flashLight
+        argument: 0
+
+      values:
+        "off": "off"
+        right: right
+        left: left
+        alert: alert
+
+
+  # ============================================================
+  # BRAKE LIGHT - Rear brake illumination
+  # ============================================================
+  - name: brake_light
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/brake_light/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": breakLOn
+        "false": breakLOff
+
+    status:
+      topic: /arduino/brake_light/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: breakL
+        argument: 0
+
+      values:
+        "on": true
+        "off": false
+
+
+  # ============================================================
+  # LIGHT SENSOR - Ambient luminosity (LDR)
+  # ============================================================
+  - name: light_sensor
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/light_sensor/reading
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: luminosity
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0
+
+
+  # ============================================================
+  # ULTRASONIC SENSOR - Obstacle distance
+  # ============================================================
+  - name: ultrasonic_sensor
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/ultrasonic_sensor/distance
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: distance
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+
+
+  # ============================================================
+  # LEFT LINE SENSOR - Infrared reflectance
+  # ============================================================
+  - name: left_line_sensor
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/line_sensor/left
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: lineL
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0
+
+
+  # ============================================================
+  # RIGHT LINE SENSOR - Infrared reflectance
+  # ============================================================
+  - name: right_line_sensor
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/line_sensor/right
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: lineR
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0
