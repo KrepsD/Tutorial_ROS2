@@ -50,7 +50,7 @@ class JavinoRosBridgeNode(Node):
         default_config_path = os.path.join(
             get_package_share_directory("my_py_pkg"),
             "javino_config",
-            "javino_bridge.yaml",
+            "javino_bridge_ChonBots.yaml",
         )
 
         self.declare_parameter(
