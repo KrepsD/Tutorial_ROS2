@@ -6,7 +6,7 @@ schema_version: 1
 serial:
   port: /dev/ttyUSB0
   baud_rate: 9600
-  percept_poll_period: 1.0
+  percept_poll_period: 0.25
   serial_read_period: 0.05
   percept_request: getPercepts
 
