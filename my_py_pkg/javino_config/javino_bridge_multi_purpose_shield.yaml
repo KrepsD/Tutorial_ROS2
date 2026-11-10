@@ -1,0 +1,124 @@
+schema_version: 1
+
+# ============================================================
+# SERIAL COMMUNICATION
+# ============================================================
+serial:
+  port: /dev/ttyUSB0
+  baud_rate: 9600
+  percept_poll_period: 0.5
+  serial_read_period: 0.05
+  percept_request: getPercepts
+
+interfaces:
+
+  # ============================================================
+  # RED LED
+  # ============================================================
+  - name: red_led
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/red_led/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": ledRedOn
+        "false": ledRedOff
+
+    status:
+      topic: /arduino/red_led/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: red
+        argument: 0
+
+      values:
+        "on": true
+        "off": false
+
+
+  # ============================================================
+  # BLUE LED
+  # ============================================================
+  - name: blue_led
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/blue_led/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": ledBlueOn
+        "false": ledBlueOff
+
+    status:
+      topic: /arduino/blue_led/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: blue
+        argument: 0
+
+      values:
+        "on": true
+        "off": false
+        
+  # ============================================================
+  # RGB LED
+  # ============================================================
+  - name: rgb_led
+    kind: discrete_actuator
+
+    command:
+      topic: /arduino/rgb_led/command
+      ros_type: std_msgs/msg/String
+
+      actions:
+        white: rgbWhite
+        green: rgbGreen
+        blue: rgbBlue
+        red: rgbRed
+        off: rgbOff
+    status:
+      topic: /arduino/rgb_led/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: rgb
+        argument: 0
+
+      values:
+        red: red
+        green: green
+        blue: blue
+        white: white
+        off: off
+        
+  # ============================================================
+  # BUZZER
+  # ============================================================
+  - name: buzzer
+    kind: boolean_actuator
+
+    command:
+      topic: /arduino/buzzer/command
+      ros_type: std_msgs/msg/Bool
+
+      actions:
+        "true": buzzerOn
+        "false": buzzerOff
+
+    status:
+      topic: /arduino/buzzer/status
+      ros_type: std_msgs/msg/Bool
+
+      percept:
+        name: buzzer
+        argument: 0
+
+      values:
+        "on": true
+        "off": false        
+        
