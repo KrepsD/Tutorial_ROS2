@@ -120,5 +120,149 @@ interfaces:
 
       values:
         "on": true
-        "off": false        
+        "off": false  
+
+  # ============================================================
+  # BUTTON 1
+  # ============================================================
+  - name: button1
+    kind: discrete_actuator
+
+    command:
+      topic: /system1
+      ros_type: std_msgs/msg/String
+
+      actions:
+        alert: alertOn
+        right: flashROn
+        left: flashLOn
+        "off": flashLightOff
+
+    status:
+      topic: /arduino/button1/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: button1
+        argument: 0
+
+      values:
+        pressed: pressed
+        released: released
+
         
+  # ============================================================
+  # BUTTON 2
+  # ============================================================
+  - name: button2
+    kind: discrete_actuator
+
+    command:
+      topic: /system2
+      ros_type: std_msgs/msg/String
+
+      actions:
+        alert: alertOn
+        right: flashROn
+        left: flashLOn
+        "off": flashLightOff
+
+    status:
+      topic: /arduino/button2/status
+      ros_type: std_msgs/msg/String
+
+      percept:
+        name: button2
+        argument: 0
+
+      values:
+        pressed: pressed
+        released: released 
+        
+  # ============================================================
+  # TEMPERATURE SENSOR
+  # ============================================================
+  - name: temperature
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/temperature_sensor
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: temp
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0      
+  
+  # ============================================================
+  # HUMIDITY SENSOR
+  # ============================================================
+  - name: humidity
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/humidity_sensor
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: hum
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0     
+        
+  # ============================================================
+  # LUMINOSITY SENSOR
+  # ============================================================
+  - name: luminosity
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/luminosity_sensor
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: lum
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0                    
+        
+        
+  # ============================================================
+  # POTENTIOMETER
+  # ============================================================
+  - name: potentiometer
+    kind: scalar_sensor
+
+    status:
+      topic: /arduino/potentiometer
+      ros_type: std_msgs/msg/Float32
+
+      percept:
+        name: pot
+        argument: 0
+
+      conversion:
+        scale: 1.0
+        offset: 0.0
+        minimum: 0.0
+        maximum: 1023.0                    
+                        
+                                       
+                
+               
+        
+        
+  
